@@ -1,0 +1,111 @@
+/* Página login */
+
+#login-form {
+    width: 290px;
+    margin: auto;
+    margin-top: 150px;
+}
+
+.login-grid {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    
+    background-color: #f2f2f2;
+    margin-top: 10px;
+    
+    padding: 10px;
+    
+}
+
+/* Panel grid */
+
+.painel {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.rotulo {
+    width: 150px;
+}
+
+.campo {
+    
+}
+
+.ui-panelgrid td {
+    height: 45px;
+}
+
+/* Ajax status*/
+
+.ajax-status {
+    position: fixed;
+    top: 55px;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+}
+
+/* Toolbar */
+
+.toolbar {
+    margin-top: 20px;
+}
+
+/* Radio */
+
+.ui-selectoneradio td label{
+    padding-right: 10px;
+}
+
+/* Checkbox */
+
+.ui-selectmanycheckbox td label{
+    padding-right: 10px;
+}
+
+
+.produto-tabela {
+    width: 100% !important;
+}
+
+.produto-tabela input {
+    width: 99%;
+}
+
+/* Customiza TabView - início */
+.ui-tabs .ui-tabs-panel {
+    padding: 0.5em 0.2em !important;
+}
+
+.ui-tabs {
+    padding: 0px !important;
+}
+
+.ui-tabs .ui-tabs-nav {
+    margin: -1px !important;
+}
+
+.ui-tabs.ui-tabs-top > .ui-tabs-nav {
+    padding: 0px !important;
+}
+/* Customiza TabView - fim */
+
+/* Menubar */
+
+.menu-sistema {
+    border: 0px !important;
+    padding: 0px !important;
+    background: none !important;
+}
+
+.menu-sistema .ui-menu-parent > a .ui-menuitem-text, .menu-sistema > .ui-menu-list > .ui-menuitem > a > .ui-menuitem-text {
+    color: #ffffff !important;
+}
+
+
+.menu-sistema .ui-icon-triangle-1-s {
+    background: url(#{resource['imagens:seta-para-baixo.png']}) no-repeat;
+}
+
+/* Menubar - fim*/

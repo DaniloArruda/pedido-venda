@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <p:panelGrid columns="4" style="width: 100%;" columnClasses="rotulo, campo, rotulo, campo">
+        
+        <p:outputLabel value="Data da entrega" for="dataEntrega" />
+        <p:calendar pattern="dd/MM/yyyy" id="dataEntrega" value="#{cadastroPedidoBean.pedido.dataEntrega}" />
+        
+        <p:spacer/>
+        <p:spacer/>
+        
+        <p:outputLabel value="Logradouro" for="logradouro" />
+        <p:inputText id="logradouro" size="50" value="#{cadastroPedidoBean.pedido.enderecoEntrega.logradouro}" />
+        
+        <p:outputLabel value="Número" for="numero" />
+        <p:inputText id="numero" size="5" value="#{cadastroPedidoBean.pedido.enderecoEntrega.numero}" />
+        
+        <p:outputLabel value="Complemento" for="complemento" />
+        <p:inputText id="complemento" size="50" value="#{cadastroPedidoBean.pedido.enderecoEntrega.complemento}" />
+        
+        <p:outputLabel value="Cidade" for="cidade" />
+        <p:inputText id="cidade" size="20" value="#{cadastroPedidoBean.pedido.enderecoEntrega.cidade}" />
+        
+        <p:outputLabel value="Estado" for="estado" />
+        <p:inputText id="estado" size="20" value="#{cadastroPedidoBean.pedido.enderecoEntrega.uf}" />
+        
+        <p:outputLabel value="CEP" for="cep" />
+        <p:inputText id="cep" size="10" value="#{cadastroPedidoBean.pedido.enderecoEntrega.cep}" />
+        
+        
+        
+    </p:panelGrid>
+
+</ui:composition>

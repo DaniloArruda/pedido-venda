@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:toolbar styleClass="toolbar">
+        <p:toolbarGroup>
+            <p:button value="Novo" outcome="/pedidos/CadastroPedidos" />
+            <p:commandButton id="btn-salvar" value="Salvar"  />
+        </p:toolbarGroup>
+
+        <p:toolbarGroup align="right">
+            <p:commandButton value="Emitir" action="#{cadastroPedidoBean.salvar2()}" />
+            <p:button value="Cancelar"  />
+            <p:button value="Enviar por e-mail" />
+            <p:separator />
+            <p:button value="Pesquisa" outcome="/pedidos/PesquisaPedidos" />
+        </p:toolbarGroup>
+    </p:toolbar>
+
+</ui:composition>

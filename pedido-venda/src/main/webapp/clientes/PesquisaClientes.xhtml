@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template/LayoutPadrao.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="titulo">Pesquisa de clientes</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>Pesquisa de clientes</h1>
+        
+        <h:form>
+            <p:toolbar styleClass="toolbar">
+                <p:toolbarGroup>
+                    <p:commandButton value="Pesquisar" action="#{pesquisaClientesBean.pesquisar()}" update="@form" />
+                </p:toolbarGroup>
+
+                <p:toolbarGroup align="right">
+                    <p:button value="Novo" outcome="/clientes/CadastroClientes" />
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:panelGrid id="painel" columns="2" styleClass="painel" columnClasses="rotulo, campo" >
+                <p:outputLabel value="CPF/CNPJ" for="cpf-cnpj"  />
+                <p:inputText id="cpf-cnpj" size="15" value="#{pesquisaClientesBean.filtro.documentoReceitaFederal}" />
+
+                <p:outputLabel value="Nome" for="nome"  />
+                <p:inputText id="nome" size="40" value="#{pesquisaClientesBean.filtro.nome}" />
+
+            </p:panelGrid>
+
+            <p:dataTable id="tabela-clientes" value="#{pesquisaClientesBean.clientesFiltrados}" var="cliente" 
+                         paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false" rows="8"
+                         emptyMessage="Nenhum cliente encontrado" style="margin-top: 20px;">
+
+                <p:column headerText="Nome">
+                    <p:outputLabel value="#{cliente.nome}" />
+                </p:column>
+
+                <p:column headerText="Tipo" style="text-align: center; width: 100px;">
+                    <p:outputLabel value="#{cliente.tipoPessoa.descricao}" />
+                </p:column>
+
+                <p:column headerText="CPF/CNPJ" width="200">
+                    <p:outputLabel value="#{cliente.documentoReceitaFederal}" rendered="#{pesquisaClientesBean.isTipoJuridica(cliente)}"  >
+                        <f:converter converterId="com.algaworks.CnpjConverter"  />
+                    </p:outputLabel>
+                    
+                    <p:outputLabel value="#{cliente.documentoReceitaFederal}" rendered="#{pesquisaClientesBean.isTipoFisica(cliente)}">
+                        <f:converter converterId="com.algaworks.CpfConverter" />
+                    </p:outputLabel>
+                </p:column>
+
+                <p:column style="text-align: center; width: 100px;">
+                    <p:button icon="ui-icon-pencil" title="editar" outcome="/clientes/CadastroClientes">
+                        <f:param name="cliente" value="#{cliente.id}" />
+                    </p:button>
+                    <p:commandButton action="#{pesquisaClientesBean.excluir(cliente)}" 
+                                     process="@this" update="tabela-clientes"
+                                     icon="ui-icon-trash" title="Excluir"  >
+                        <p:confirm message="Tem certeza que quer excluir o cliente #{cliente.nome}?" icon="ui-icon-alert" 
+                                   header="Exclusão de cliente"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
