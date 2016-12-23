@@ -65,4 +65,10 @@ public class Clientes implements Serializable {
         
         return criteria.addOrder(Order.asc("nome")).list();
     }
+
+    public List<Cliente> porNome(String nome) {
+        return manager.createQuery("from Cliente where upper(nome) like :nome", Cliente.class)
+                .setParameter("nome", "%" + nome.toUpperCase() + "%")
+                .getResultList();
+    }
 }

@@ -7,11 +7,12 @@
     <p:toolbar styleClass="toolbar">
         <p:toolbarGroup>
             <p:button value="Novo" outcome="/pedidos/CadastroPedidos" />
-            <p:commandButton id="btn-salvar" value="Salvar"  />
+            <p:commandButton id="btn-salvar" value="Salvar" action="#{cadastroPedidoBean.salvar()}" 
+                             update="@form"/>
         </p:toolbarGroup>
 
         <p:toolbarGroup align="right">
-            <p:commandButton value="Emitir" action="#{cadastroPedidoBean.salvar2()}" />
+            <p:commandButton value="Emitir" />
             <p:button value="Cancelar"  />
             <p:button value="Enviar por e-mail" />
             <p:separator />
