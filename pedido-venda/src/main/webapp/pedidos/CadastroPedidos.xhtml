@@ -8,16 +8,17 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
     
     <f:metadata>
+        <f:viewParam name="pedido" value="#{cadastroPedidoBean.pedido}" />
         <f:event type="preRenderView" listener="#{cadastroPedidoBean.inicializar()}"/> 
     </f:metadata>
 
-    <ui:define name="titulo">Novo pedido</ui:define>
+    <ui:define name="titulo">#{cadastroPedidoBean.editando() ? 'Edição de pedido' : 'Novo pedido'}</ui:define>
 
     <ui:define name="conteudo">
         
-        <h1>Novo pedido</h1>
+        <h1>#{cadastroPedidoBean.editando() ? 'Edição de pedido' : 'Novo pedido'}</h1>
         
-        <h:form>
+        <h:form id="frm">
             <p:messages autoUpdate="true" closable="true" />
             
             <ui:include src="/WEB-INF/template/pedidos/BotoesPedido.xhtml" />
@@ -26,7 +27,7 @@
 
             <p:tabView style="margin-top: 20px;">
                 <p:tab title="Itens">
-                    <!--<ui:include src="/WEB-INF/template/pedidos/ItensPedido.xhtml" />-->
+                    <ui:include src="/WEB-INF/template/pedidos/ItensPedido.xhtml" />
                 </p:tab>
                 <p:tab title="Dados de entrega">
                     <ui:include src="/WEB-INF/template/pedidos/DadosEntregaPedido.xhtml" />

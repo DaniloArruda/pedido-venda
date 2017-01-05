@@ -5,7 +5,7 @@
  */
 package com.algaworks.model;
 
-import com.algaworks.pedidovenda.validation.SKU;
+import com.algaworks.validation.SKU;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;

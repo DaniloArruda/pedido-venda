@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -25,24 +26,14 @@ import javax.persistence.Table;
 @Table(name = "itens_pedido")
 public class ItemPedido implements Serializable {
     
-    @Id
-    @GeneratedValue
     private Long id;
-    
-    @Column(nullable = false, length = 3)
-    private Integer quantidade;
-    
-    @Column(name = "valor_unitario", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valorUnitario;
-    
-    @ManyToOne
-    @JoinColumn(name = "produto_id", nullable = false)
-    private Produto produto;
-    
-    @ManyToOne
-    @JoinColumn(name = "pedido_id", nullable = false)
+    private Integer quantidade = 1;
+    private BigDecimal valorUnitario = BigDecimal.ZERO;
+    private Produto produto = new Produto();
     private Pedido pedido;
 
+    @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -51,6 +42,7 @@ public class ItemPedido implements Serializable {
         this.id = id;
     }
 
+    @Column(nullable = false, length = 3)
     public Integer getQuantidade() {
         return quantidade;
     }
@@ -59,6 +51,7 @@ public class ItemPedido implements Serializable {
         this.quantidade = quantidade;
     }
 
+    @Column(name = "valor_unitario", nullable = false, precision = 10, scale = 2)
     public BigDecimal getValorUnitario() {
         return valorUnitario;
     }
@@ -67,6 +60,8 @@ public class ItemPedido implements Serializable {
         this.valorUnitario = valorUnitario;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "produto_id", nullable = false)
     public Produto getProduto() {
         return produto;
     }
@@ -75,6 +70,8 @@ public class ItemPedido implements Serializable {
         this.produto = produto;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", nullable = false)
     public Pedido getPedido() {
         return pedido;
     }
@@ -106,5 +103,14 @@ public class ItemPedido implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Transient
+    public BigDecimal getValorTotal() {
+        return this.valorUnitario.multiply(new BigDecimal(this.quantidade));
+    }
+    
+    public boolean temProdutoAssociado() {
+        return this.produto != null && this.produto.getId() != null;
     }
 }

@@ -5,7 +5,7 @@
  */
 package com.algaworks.repository.filter;
 
-import com.algaworks.pedidovenda.validation.SKU;
+import com.algaworks.validation.SKU;
 import java.io.Serializable;
 
 /**

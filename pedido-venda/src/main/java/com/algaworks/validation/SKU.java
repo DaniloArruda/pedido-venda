@@ -1,4 +1,4 @@
-package com.algaworks.pedidovenda.validation;
+package com.algaworks.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

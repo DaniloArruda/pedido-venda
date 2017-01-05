@@ -8,14 +8,19 @@ package com.algaworks.controller;
 import com.algaworks.model.Cliente;
 import com.algaworks.model.EnderecoEntrega;
 import com.algaworks.model.FormaPagamento;
+import com.algaworks.model.ItemPedido;
 import com.algaworks.model.Pedido;
+import com.algaworks.model.Produto;
 import com.algaworks.model.Usuario;
 import com.algaworks.repository.Clientes;
+import com.algaworks.repository.Produtos;
 import com.algaworks.repository.Usuarios;
 import com.algaworks.service.CadastroPedidoService;
 import com.algaworks.service.NegocioException;
 import com.algaworks.util.jsf.FacesUtil;
+import com.algaworks.validation.SKU;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -34,12 +39,17 @@ public class CadastroPedidoBean implements Serializable {
     private Pedido pedido;
     private List<Usuario> vendedores;
     private FormaPagamento[] formasPagamento = FormaPagamento.values();
+    private Produto produtoLinhaEditavel;
+    private String sku;
     
     @Inject
     private Usuarios usuarios;
     
     @Inject
     private Clientes clientes;
+    
+    @Inject
+    private Produtos produtos;
     
     @Inject
     private CadastroPedidoService cadastroPedidoService;
@@ -51,6 +61,8 @@ public class CadastroPedidoBean implements Serializable {
     public void inicializar() {
         if (!FacesUtil.isPostBack()) {
             vendedores = usuarios.todos();
+            
+            this.pedido.adicionarItemVazio();
         }
     }
     
@@ -78,6 +90,23 @@ public class CadastroPedidoBean implements Serializable {
     public FormaPagamento[] getFormasPagamento() {
         return formasPagamento;
     }
+
+    public Produto getProdutoLinhaEditavel() {
+        return produtoLinhaEditavel;
+    }
+
+    public void setProdutoLinhaEditavel(Produto produtoLinhaEditavel) {
+        this.produtoLinhaEditavel = produtoLinhaEditavel;
+    }
+
+    @SKU
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
     
     public void salvar() {
         pedido = this.cadastroPedidoService.salvar(pedido);
@@ -85,7 +114,61 @@ public class CadastroPedidoBean implements Serializable {
         FacesUtil.addInfoMessage("Pedido salvo com sucesso!");
     }
     
+    public boolean editando() {
+        return this.pedido.getId() != null;
+    }
+    
+    public void recalcularPedido() {
+        BigDecimal total = this.pedido.getValorFrete().subtract(this.pedido.getValorDesconto());
+        
+        for (ItemPedido item : this.pedido.getItens()) {
+            if (item.getProduto() != null && item.getProduto().getId() != null)
+                total = total.add(item.getValorTotal());
+        }
+        
+        this.pedido.setValorTotal(total);
+    }
+    
+    private boolean produtoRepetido() {
+        for (ItemPedido item : this.pedido.getItens()) {
+            if (item.getProduto().equals(this.produtoLinhaEditavel))
+                return true;
+        }
+        return false;
+    }
+    
+    public void adicionarItem() {
+        if (this.produtoRepetido())
+            FacesUtil.addErrorMessage("Não pode repetir produtos dentro do pedido.");
+        else {
+            ItemPedido item = new ItemPedido();
+
+            item.setPedido(pedido);
+            item.setProduto(produtoLinhaEditavel);
+            item.setValorUnitario(item.getProduto().getValorUnitario());
+
+            this.pedido.getItens().add(item);
+            this.recalcularPedido();
+        }
+        this.produtoLinhaEditavel = null;
+        this.sku = null;
+    }
+    
+    public void buscarProdutoPorSku() {
+        Produto produto = this.produtos.porSku(sku);
+        
+        if (produto != null) {
+            this.produtoLinhaEditavel = produto;
+            this.adicionarItem();
+        } else
+            FacesUtil.addErrorMessage("Não há produtos com esse SKU.");
+    }
+    
     public List<Cliente> completarCliente(String nome) {
         return clientes.porNome(nome);
+    }
+    
+    public List<Produto> completarProduto(String nome) {
+        return produtos.porNome(nome);
     }
 }

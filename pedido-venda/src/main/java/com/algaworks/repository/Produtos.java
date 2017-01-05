@@ -76,5 +76,11 @@ public class Produtos implements Serializable {
         
         return criteria.addOrder(Order.asc("nome")).list();
     }
+
+    public List<Produto> porNome(String nome) {
+        return manager.createQuery("from Produto where upper(nome) like :nome", Produto.class)
+                .setParameter("nome", nome.toUpperCase() + "%")
+                .getResultList();
+    }
     
 }
